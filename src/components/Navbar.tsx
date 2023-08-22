@@ -10,8 +10,13 @@ interface NavItemProps {
 
 function NavItem({ name, path }: NavItemProps) {
   return (
-    <li className="text-description transition-all duration-200 ease-out hover:text-primary hover:scale-105">
-      <Link href={path}>{name}</Link>
+    <li>
+      <Link
+        href={path}
+        className="block text-description transition-all duration-200 ease-out hover:text-primary hover:scale-105 focus:text-primary focus:scale-105"
+      >
+        {name}
+      </Link>
     </li>
   );
 }
