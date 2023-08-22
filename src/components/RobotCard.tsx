@@ -1,3 +1,4 @@
+"use client"
 import Link from "next/link";
 import { BsRobot } from "react-icons/bs";
 
