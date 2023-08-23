@@ -14,7 +14,7 @@ export default function RobotCard({ id, name, description }: RobotCardProps) {
       <h2 className="text-4xl text-primary font-bold capitalize">{name}</h2>
       <BsRobot className="text-description h-24 w-20" />
       <p className="justify-self-start text-description text-[0.9rem]">{description.slice(0, 100)}</p>
-      <LinkButton path={`/robot/${id}`}>Selectionar</LinkButton>
+      <LinkButton path={`/robot/${id}`}>Selecionar</LinkButton>
     </section>
   );
 }
