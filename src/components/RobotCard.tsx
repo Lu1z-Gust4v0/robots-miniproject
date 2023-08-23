@@ -15,7 +15,7 @@ export default function RobotCard({ id, name, description }: RobotCardProps) {
       <BsRobot className="text-description h-24 w-20" />
       <p className="justify-self-start text-description text-[0.9rem]">{description.slice(0, 100)}</p>
       <Link
-        href={"/"}
+        href={`/robot/${id}`}
         className="block bg-primary text-white py-2 px-4 rounded-md transition-all duration-200 ease-out hover:scale-105 hover:bg-accent focus:scale-105 focus:bg-accent"
       >
         Selecionar 
