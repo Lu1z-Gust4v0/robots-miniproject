@@ -17,7 +17,7 @@ interface Error {
 }
 
 async function getData(id: string): Promise<GetDataResponse | Error> {
-  const response = await fetch(`http:localhost:3000/api/robot?id=${id}`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/robot?id=${id}`, {
     cache: "no-store",
   });
 
