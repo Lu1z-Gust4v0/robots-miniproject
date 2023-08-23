@@ -1,6 +1,6 @@
 "use client"
-import Link from "next/link";
 import { BsRobot } from "react-icons/bs";
+import LinkButton from "@/components/LinkButton";
 
 interface RobotCardProps {
   id: string;
@@ -14,12 +14,7 @@ export default function RobotCard({ id, name, description }: RobotCardProps) {
       <h2 className="text-4xl text-primary font-bold capitalize">{name}</h2>
       <BsRobot className="text-description h-24 w-20" />
       <p className="justify-self-start text-description text-[0.9rem]">{description.slice(0, 100)}</p>
-      <Link
-        href={`/robot/${id}`}
-        className="block bg-primary text-white py-2 px-4 rounded-md transition-all duration-200 ease-out hover:scale-105 hover:bg-accent focus:scale-105 focus:bg-accent"
-      >
-        Selecionar 
-      </Link>
+      <LinkButton path={`/robot/${id}`}>Selectionar</LinkButton>
     </section>
   );
 }

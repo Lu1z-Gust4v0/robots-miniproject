@@ -1,6 +1,7 @@
 import { Table, TableHeader, TableBody, historyToRows } from "@/components/Table";
 import type { Metadata } from "next";
 import { Error, isError } from "@/utils/error"
+import LinkButton from "@/components/LinkButton"
 
 export const metadata: Metadata = {
   title: "UFC Autobots • Robot",
@@ -42,6 +43,10 @@ export default async function Robot({ params }: RobotPageProps) {
           <TableHeader headers={headers}/>
           {!isError(data) && <TableBody rows={historyToRows(data.content)}/>}
         </Table>
+        <section className="flex w-full my-4 p-4 gap-4 justify-end">
+          <LinkButton path="/" >Voltar</LinkButton>
+          <LinkButton path={`/run/${params.id}`}>Nova execução</LinkButton>
+        </section>
       </section> 
     </main>
   );
