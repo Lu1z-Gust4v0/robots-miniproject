@@ -49,10 +49,12 @@ export default async function Robot({ params }: RobotPageProps) {
         <h2 className="text-description text-2xl">Bot <span className="text-primary">{params.id}</span></h2>
         <h3 className="text-description">Histórico de execuções</h3>
       </section>
-      <Table>
-        <TableHeader headers={headers}/>
-        {!isError(data) && <TableBody rows={historyToRows(data.content)}/>}
-      </Table>
+      <section className="w-full my-4 py-4 overflow-x-auto">
+        <Table>
+          <TableHeader headers={headers}/>
+          {!isError(data) && <TableBody rows={historyToRows(data.content)}/>}
+        </Table>
+      </section> 
     </main>
   );
 }

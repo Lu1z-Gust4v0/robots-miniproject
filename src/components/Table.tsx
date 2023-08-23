@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import Link from "next/link";
+import { removeWhitespace, isString } from "@/utils/string"
 
 interface TableProps {
 	children: ReactNode
@@ -14,16 +15,39 @@ interface TableHeaderProps {
 	headers: ReactNode[]
 }
 
+function statusToColor(status: string) {
+  const parsed = removeWhitespace(status);
+
+  if (parsed === "sucesso") {
+    return <span className="text-green-500 font-semibold">{status}</span>
+  } 
+  
+  if (parsed === "pendente") {
+    return <span className="text-yellow-500 font-semibold">{status}</span>
+  } 
+
+  if (parsed === "falha") {
+    return <span className="text-red-500 font-semibold">{status}</span>
+  }
+}
+
 export function historyToRows(content: string[]): ReactNode[][] {
 	const rows: ReactNode[][] = []
 
 	content.forEach((element) => {
 		const row: ReactNode[] = element.split(",")
+ 
+    row[2] = statusToColor(isString(row[2]) ? row[2] : "")
 
 		row.push(
-			<Link key={row[0]?.toString()} href={`/details/${row[0]}`}>Detalhes</Link>
+			<Link 
+        className="block hover:text-accent hover:scale-105 focus:text-accent focus:scale-105 transition-all duration-200 ease-out"
+        key={row[0]?.toString()} 
+        href={`/details/${row[1]}`}
+      >
+        Detalhes
+      </Link>
 		)
-
 		rows.push(row)
 	});
 
@@ -74,7 +98,9 @@ export function TableBody({ rows }: TableBodyProps) {
 
 export function Table({ children, className }: TableProps) {
 	return (
-		<table className={`my-8 w-full ${className}`}>
+		<table 
+      className={`w-full min-h-[150px] min-w-[720px] shadow-lg rounded-t-lg overflow-hidden ${className}`}
+    >
 			{children}
 		</table>
 	)
