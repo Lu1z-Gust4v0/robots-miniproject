@@ -1,4 +1,4 @@
-import { Table, TableHeader, TableBody, contentToRows } from "@/components/Table";
+import { Table, TableHeader, TableBody, historyToRows } from "@/components/Table";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -51,7 +51,7 @@ export default async function Robot({ params }: RobotPageProps) {
       </section>
       <Table>
         <TableHeader headers={headers}/>
-        {!isError(data) && <TableBody rows={contentToRows(data.content)}/>}
+        {!isError(data) && <TableBody rows={historyToRows(data.content)}/>}
       </Table>
     </main>
   );

@@ -1,22 +1,28 @@
 import { ReactNode } from "react";
+import Link from "next/link";
 
 interface TableProps {
 	children: ReactNode
+	className?: string;
 }
 
 interface TableBodyProps {
-	rows: string[][]
+	rows: ReactNode[][]
 }
 
 interface TableHeaderProps {
-	headers: string[]
+	headers: ReactNode[]
 }
 
-export function contentToRows(content: string[]): string[][] {
-	const rows: string[][] = []
+export function historyToRows(content: string[]): ReactNode[][] {
+	const rows: ReactNode[][] = []
 
 	content.forEach((element) => {
-		const row = element.split(",")
+		const row: ReactNode[] = element.split(",")
+
+		row.push(
+			<Link key={row[0]?.toString()} href={`/details/${row[0]}`}>Detalhes</Link>
+		)
 
 		rows.push(row)
 	});
@@ -26,11 +32,16 @@ export function contentToRows(content: string[]): string[][] {
 
 export function TableHeader({ headers }: TableHeaderProps) {
 	return <thead>
-		<tr>
+		<tr className="bg-primary">
 			{headers.map((header, index) => {
-				return <th key={header + index}>
-					{header}
-				</th>
+				return (
+					<th 
+						className="text-start text-white text-xl px-4 py-2" 
+						key={"table-header-" + index}
+					>
+						{header}
+					</th>
+				)
 			})}
 		</tr>
 	</thead>
@@ -39,18 +50,31 @@ export function TableHeader({ headers }: TableHeaderProps) {
 export function TableBody({ rows }: TableBodyProps) {
 	return <tbody>
 		{rows.map((row, index) => {
-			return <tr key={row[index] + index}>
-				{row.map((field, index) => {
-					return <td key={field + index}>{field}</td>
-				})}
-			</tr>
+			const key = "table-row-" + index;
+			return (
+				<tr
+					className="border-b border-description/50"
+					key={key}
+				>
+					{row.map((field, index) => {
+						return (
+							<td
+								className="px-4 py-2 text-description"
+								key={`${key}-row-data-${index}`}
+							>
+								{field}
+							</td>
+						)
+					})}
+				</tr>
+			)
 		})}
 	</tbody>
 }
 
-export function Table({ children }: TableProps) {
+export function Table({ children, className }: TableProps) {
 	return (
-		<table>
+		<table className={`my-8 w-full ${className}`}>
 			{children}
 		</table>
 	)
