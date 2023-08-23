@@ -1,5 +1,6 @@
 import { Table, TableHeader, TableBody, historyToRows } from "@/components/Table";
 import type { Metadata } from "next";
+import { Error, isError } from "@/utils/error"
 
 export const metadata: Metadata = {
   title: "UFC Autobots • Robot",
@@ -12,19 +13,6 @@ interface RobotPageProps {
 interface GetDataResponse {
   content: string[]
 }
-
-interface Error {
-  message: string;
-}
-
-function isError(input: unknown): input is Error {
-  if ((input as Error).message !== undefined) {
-    return true
-  }
-  return false
-}
-
-
 
 async function getData(id: string): Promise<GetDataResponse | Error> {
   const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/robot?id=${id}`, {
