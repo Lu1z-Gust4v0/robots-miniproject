@@ -1,18 +1,13 @@
-import {
-  historyToRows,
-  Table,
-  TableBody,
-  TableHeader,
-} from "@/components/Table";
+import { Table, TableBody, TableHeader, detailsToRows } from "@/components/Table";
 import type { Metadata } from "next";
 import { Error, isError } from "@/utils/error";
 import LinkButton from "@/components/LinkButton";
 
 export const metadata: Metadata = {
-  title: "UFC Autobots • Robot",
+  title: "UFC Autobots • Details",
 };
 
-interface RobotPageProps {
+interface DetailsPageProps {
   params: { id: string };
 }
 
@@ -22,7 +17,7 @@ interface GetDataResponse {
 
 async function getData(id: string): Promise<GetDataResponse | Error> {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_URL}/api/robot?id=${id}`,
+    `${process.env.NEXT_PUBLIC_URL}/api/details?id=${id}`,
     {
       cache: "no-store",
     },
@@ -35,10 +30,10 @@ async function getData(id: string): Promise<GetDataResponse | Error> {
   return response.json();
 }
 
-export default async function Robot({ params }: RobotPageProps) {
+export default async function Details({ params }: DetailsPageProps) {
   const data = await getData(params.id);
 
-  const headers = ["Data / Hora", "Task", "Status", "Detalhes"];
+  const headers = ["Data / Hora", "Mensagem"]
 
   return (
     <main className="flex flex-col min-h-[calc(100vh - 4rem)] container-wrapper py-4">
@@ -46,17 +41,16 @@ export default async function Robot({ params }: RobotPageProps) {
         <h2 className="text-description text-3xl">
           Bot <span className="text-primary">{params.id}</span>
         </h2>
-        <h3 className="text-description">Histórico de execuções</h3>
+        <h3 className="text-description">Informações sobre a execução</h3>
       </section>
       <section className="w-full my-4 py-4 overflow-x-auto">
         <Table>
           <TableHeader headers={headers} />
-          {!isError(data) && <TableBody rows={historyToRows(data.content)} />}
+          {!isError(data) && <TableBody rows={detailsToRows(data.content)} />}
         </Table>
       </section>
-      <section className="flex w-full p-4 gap-4 justify-end">
+      <section className="flex w-full p-4 justify-end">
         <LinkButton path="/">Voltar</LinkButton>
-        <LinkButton path={`/run/${params.id}`}>Nova execução</LinkButton>
       </section>
     </main>
   );
