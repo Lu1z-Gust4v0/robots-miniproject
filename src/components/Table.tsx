@@ -31,7 +31,7 @@ function statusToColor(status: string) {
   }
 }
 
-export function historyToRows(content: string[]): ReactNode[][] {
+export function historyToRows(content: string[], botId: string): ReactNode[][] {
 	const rows: ReactNode[][] = []
 
 	content.forEach((element) => {
@@ -43,7 +43,7 @@ export function historyToRows(content: string[]): ReactNode[][] {
 			<Link 
         className="block hover:text-accent hover:scale-105 focus:text-accent focus:scale-105 transition-all duration-200 ease-out"
         key={row[0]?.toString()} 
-        href={`/details/${row[1]}`}
+        href={`/robot/${botId}/details/${row[1]}`}
       >
         Detalhes
       </Link>
