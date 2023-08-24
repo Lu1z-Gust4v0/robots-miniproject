@@ -1,0 +1,15 @@
+robot1-task1,12-04-2004 12:00:01,Realizando operação 1
+robot1-task1,12-04-2004 12:00:02,Realizando operação 2
+robot1-task1,12-04-2004 12:00:03,Realizando operação 3
+robot1-task1,12-04-2004 12:00:04,Realizando operação 4
+robot1-task1,12-04-2004 12:00:05,Realizando operação 5
+robot1-task2,13-04-2004 12:00:01,Realizando operação 1
+robot1-task2,13-04-2004 12:00:02,Realizando operação 2
+robot1-task2,13-04-2004 12:00:03,Realizando operação 3
+robot1-task2,13-04-2004 12:00:04,Realizando operação 4
+robot1-task2,13-04-2004 12:00:05,Realizando operação 5
+robot1-task3,14-04-2004 12:00:01,Realizando operação 1
+robot1-task3,14-04-2004 12:00:02,Realizando operação 2
+robot1-task3,14-04-2004 12:00:03,Realizando operação 3
+robot1-task3,14-04-2004 12:00:04,Realizando operação 4
+robot1-task3,14-04-2004 12:00:05,Falha na operação 5
