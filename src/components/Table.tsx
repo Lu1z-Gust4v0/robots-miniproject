@@ -54,6 +54,18 @@ export function historyToRows(content: string[]): ReactNode[][] {
 	return rows;
 }
 
+export function detailsToRows(content: string[]): ReactNode[][] {
+  const rows: ReactNode[][] = []
+  
+  content.forEach((element) => {
+    const row = element.split(",").slice(1)
+  
+    rows.push(row)
+  })
+
+  return rows
+} 
+
 export function TableHeader({ headers }: TableHeaderProps) {
 	return <thead>
 		<tr className="bg-primary">
