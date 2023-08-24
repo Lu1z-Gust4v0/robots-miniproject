@@ -1,5 +1,6 @@
 import path from "path";
-import { promises } from "fs";
+import fs from "fs";
+import readline from "readline";
 import { NextResponse } from "next/server";
 import { removeWhitespace } from "@/utils/string"
 
@@ -10,19 +11,21 @@ export async function GET(request: Request) {
 
   const dataDirectory = path.join(`${process.cwd()}/public/data`)
 
-  const content = await promises.readFile(`${dataDirectory}/executions.txt`, "utf8")
+  const fileStream = fs.createReadStream(`${dataDirectory}/executions.txt`, "utf8")
 
-  const lines = content.split(/\r?\n/);
+  const reader = readline.createInterface({
+    input: fileStream,
+    crlfDelay: Infinity,
+  })
 
   const response: string[] = []
-
-  lines.forEach((line) => {
+  for await (const line of reader) {
     const executionId = line.split(",")[1]
 
     if (executionId && id === removeWhitespace(executionId.split("-")[0])) {
       response.push(line)
-    } 
-  });
+    }
+  }
 
   return NextResponse.json({ content: response })
 }
