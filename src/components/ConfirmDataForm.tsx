@@ -1,5 +1,10 @@
 "use client";
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useRouter } from 'next/navigation'
+
+interface ConfirmDataFormProps {
+  botId: string;
+}
 
 interface FormData {
   user: string;
@@ -14,8 +19,10 @@ const DEFAULT_DATA = {
   company: "",
 };
 
-export default function ConfirmDataForm() {
+export default function ConfirmDataForm({ botId }: ConfirmDataFormProps) {
   const [formData, setFormData] = useState<FormData>(DEFAULT_DATA);
+
+  const router = useRouter();
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const target = e.target;
@@ -28,10 +35,26 @@ export default function ConfirmDataForm() {
     });
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    
+    const response = await fetch(`/api/confirm`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    }) 
 
-    console.log(formData);
+    const data = await response.json();
+    
+    if (!response.ok) {
+      alert(data.message);
+      return
+    }
+    setFormData(DEFAULT_DATA);
+    alert(data.message);
+    router.push(`/robot/${botId}`);
   }
 
   return (

@@ -19,7 +19,7 @@ export default async function Confirm({ params }: ConfirmPageProps) {
         </h2>
       </section>
       <section className="w-full my-8">  
-        <ConfirmDataForm />
+        <ConfirmDataForm botId={params.botId} />
       </section>
       <section className="flex w-full p-4 justify-end">
         <LinkButton path={`/robot/${params.botId}`}>Voltar</LinkButton>
