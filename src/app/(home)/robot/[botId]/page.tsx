@@ -56,7 +56,7 @@ export default async function Robot({ params }: RobotPageProps) {
       </section>
       <section className="flex w-full p-4 gap-4 justify-end">
         <LinkButton path="/">Voltar</LinkButton>
-        <LinkButton path={`/run/${params.botId}`}>Nova execução</LinkButton>
+        <LinkButton path={`/confirm/${params.botId}`}>Nova execução</LinkButton>
       </section>
     </main>
   );
