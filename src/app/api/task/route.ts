@@ -27,14 +27,18 @@ export async function GET(request: Request) {
 
     if (executionId && id === removeWhitespace(executionId)) {
       const [start, taskId, status, end] = line.split(",");
-      
-      const content = [start, taskId, parseStatus(status, end)]
 
-      return NextResponse.json({ content: content }) 
+      const content = [start, taskId, parseStatus(status, end)];
+
+      fileStream.close();
+
+      return NextResponse.json({ content: content });
     }
   }
-  
+
   fileStream.close();
 
-  return NextResponse.json({ content: [], error: "task not found" }, { status: 404 });
+  return NextResponse.json({ content: [], error: "task not found" }, {
+    status: 404,
+  });
 }

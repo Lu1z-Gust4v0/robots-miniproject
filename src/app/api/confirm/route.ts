@@ -27,12 +27,14 @@ export async function POST(request: Request) {
   });
 
   for await (const line of reader) {
-    const [lineUser, _, linePassword] = line.split(",");
+    const [lineUser, _, linePassword, __] = line.split(",");
 
     if (
       lineUser === removeWhitespace(user) &&
       linePassword === removeWhitespace(password)
     ) {
+      fileStream.close();
+
       return NextResponse.json({
         message: "Credentials confirmed successfully",
       }, { status: 200 });

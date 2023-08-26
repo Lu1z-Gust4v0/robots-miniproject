@@ -9,6 +9,10 @@ interface ILoginForm {
   password: string;
 }
 
+function updateCredentials(path: string, credentials: string) {
+  fs.writeFileSync(`${path}/credentials.txt`, `${credentials},true`)
+}
+
 export async function POST(request: Request) {
   const { user, password } = await request.json() as ILoginForm;
 
@@ -25,12 +29,16 @@ export async function POST(request: Request) {
   });
 
   for await (const line of reader) {
-    const [lineUser, _, linePassword] = line.split(",");
+    const [lineUser, lineEmail, linePassword, _] = line.split(",");
 
     if (
       lineUser === removeWhitespace(user) &&
       linePassword === removeWhitespace(password)
     ) {
+      fileStream.close();
+
+      updateCredentials(dataDirectory,`${lineUser},${lineEmail},${linePassword}`) 
+
       return NextResponse.json({
         message: "Credentials confirmed successfully",
       }, { status: 200 });
