@@ -4,6 +4,8 @@ import { Error, isError } from "@/utils/error";
 import LinkButton from "@/components/LinkButton";
 import TaskCard from "@/components/TaskCard";
 import { detailsToRows } from "@/components/dataToRows";
+import { getCredentials } from "@/utils/credentials";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "UFC Autobots • Details",
@@ -53,6 +55,14 @@ async function getExecutionDetails(id: string): Promise<ExecutionDetailsResponse
 }
 
 export default async function Details({ params }: DetailsPageProps) {
+  const credentials = await getCredentials()
+  
+  if (isError(credentials)) {
+    console.log(credentials.message);
+
+    redirect("/login");
+  }
+
   const details = await getExecutionDetails(params.taskId);
   const task = await getTaskById(params.taskId);
 

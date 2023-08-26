@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import ConfirmDataForm from "@/components/ConfirmDataForm";
 import LinkButton from "@/components/LinkButton";
+import { isError } from "@/utils/error";
+import { getCredentials } from "@/utils/credentials";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "UFC Autobots • Confirm",
@@ -11,6 +14,14 @@ interface ConfirmPageProps {
 }
 
 export default async function Confirm({ params }: ConfirmPageProps) {
+  const credentials = await getCredentials();
+
+  if (isError(credentials)) {
+    console.log(credentials.message);
+
+    redirect("/login");
+  }
+
   return (
     <main className="flex flex-col min-h-[calc(100vh - 4rem)] container-wrapper py-4">
       <section className="flex flex-col">
@@ -18,12 +29,12 @@ export default async function Confirm({ params }: ConfirmPageProps) {
           Executar Bot <span className="text-primary">{params.botId}</span>
         </h2>
       </section>
-      <section className="w-full my-8">  
+      <section className="w-full my-8">
         <ConfirmDataForm botId={params.botId} />
       </section>
       <section className="flex w-full p-4 justify-end">
         <LinkButton path={`/robot/${params.botId}`}>Voltar</LinkButton>
       </section>
     </main>
-  )
+  );
 }

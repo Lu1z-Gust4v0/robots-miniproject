@@ -7,6 +7,8 @@ import type { Metadata } from "next";
 import { Error, isError } from "@/utils/error";
 import LinkButton from "@/components/LinkButton";
 import { historyToRows } from "@/components/dataToRows";
+import { getCredentials } from "@/utils/credentials";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "UFC Autobots • Robot",
@@ -36,6 +38,14 @@ async function getData(id: string): Promise<GetDataResponse | Error> {
 }
  
 export default async function Robot({ params }: RobotPageProps) {
+  const credentials = await getCredentials()
+  
+  if (isError(credentials)) {
+    console.log(credentials.message);
+
+    redirect("/login");
+  }
+
   const data = await getData(params.botId);
 
   const headers = ["Data / Hora", "Task", "Status", "Detalhes"];

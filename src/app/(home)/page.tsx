@@ -1,14 +1,25 @@
 import type { Metadata } from "next"
 import CarouselSection from "@/components/CarouselSection";
+import { isError } from "@/utils/error";
+import { getCredentials } from "@/utils/credentials";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "UFC Autobots • Home",
   description: "Projeto para o processo seletivo",
 }
 
-const USERNAME = "Gustavo";
+export default async function Home() {
+  const credentials = await getCredentials()
+  
+  if (isError(credentials)) {
+    console.log(credentials.message);
 
-export default function Home() {
+    redirect("/login");
+  }
+  
+  const USERNAME = !isError(credentials) ? credentials.content[0] : "" 
+
   return (
     <main className="flex flex-col min-h-[calc(100vh - 4rem)] container-wrapper py-4">
       <section className="flex flex-col w-full">

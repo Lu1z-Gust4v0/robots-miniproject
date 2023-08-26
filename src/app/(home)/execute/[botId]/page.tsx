@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import FileUploader from "@/components/FileUploader";
+import { isError } from "@/utils/error";
+import { getCredentials } from "@/utils/credentials";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "UFC Autobots • Execute",
@@ -10,7 +13,13 @@ interface ExecutePageProps {
 }
 
 export default async function Execute({ params }: ExecutePageProps) {
+  const credentials = await getCredentials()
   
+  if (isError(credentials)) {
+    console.log(credentials.message);
+
+    redirect("/login");
+  }  
 
   return (
     <main className="flex flex-col min-h-[calc(100vh - 4rem)] container-wrapper py-4">
