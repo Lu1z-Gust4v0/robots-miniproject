@@ -95,7 +95,7 @@ export default function Navbar() {
         <h2 className="text-xl text-description">UFC Autobots</h2>
       </div>
       <ul className="hidden md:flex items-center gap-4 ml-auto">
-        <NavItem path="/" name="Alterar Senha" />
+        <NavItem path="/change-password" name="Alterar Senha" />
         <LogoutButton name="Encerrar Sessão" logout={logout} />
       </ul>
       <button className="ml-auto md:hidden" onClick={() => toggleMenu()}>
@@ -104,7 +104,7 @@ export default function Navbar() {
       {open && (
         <div className="absolute right-0 top-16 py-4 w-full bg-white shadow-md">
           <ul className="flex flex-col px-4">
-            <MobileNavItem path="/" name="Alterar Senha" />
+            <MobileNavItem path="/change-password" name="Alterar Senha" />
             <MobileLogoutButton name="Encerrar Sessão" logout={logout} />
           </ul>
         </div>
