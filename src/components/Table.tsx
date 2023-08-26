@@ -1,6 +1,4 @@
 import { ReactNode } from "react";
-import Link from "next/link";
-import { removeWhitespace, isString } from "@/utils/string"
 
 interface TableProps {
 	children: ReactNode
@@ -14,57 +12,6 @@ interface TableBodyProps {
 interface TableHeaderProps {
 	headers: ReactNode[]
 }
-
-function statusToColor(status: string) {
-  const parsed = removeWhitespace(status);
-
-  if (parsed === "sucesso") {
-    return <span className="text-green-500 font-semibold">{status}</span>
-  } 
-  
-  if (parsed === "pendente") {
-    return <span className="text-yellow-500 font-semibold">{status}</span>
-  } 
-
-  if (parsed === "falha") {
-    return <span className="text-red-500 font-semibold">{status}</span>
-  }
-}
-
-export function historyToRows(content: string[], botId: string): ReactNode[][] {
-	const rows: ReactNode[][] = []
-
-	content.forEach((element) => {
-		const row: ReactNode[] = element.split(",")
- 
-    row[2] = statusToColor(isString(row[2]) ? row[2] : "")
-
-		row.push(
-			<Link 
-        className="block hover:text-accent hover:scale-105 focus:text-accent focus:scale-105 transition-all duration-200 ease-out"
-        key={row[0]?.toString()} 
-        href={`/robot/${botId}/details/${row[1]}`}
-      >
-        Detalhes
-      </Link>
-		)
-		rows.push(row)
-	});
-
-	return rows;
-}
-
-export function detailsToRows(content: string[]): ReactNode[][] {
-  const rows: ReactNode[][] = []
-  
-  content.forEach((element) => {
-    const row = element.split(",").slice(1)
-  
-    rows.push(row)
-  })
-
-  return rows
-} 
 
 export function TableHeader({ headers }: TableHeaderProps) {
 	return <thead>

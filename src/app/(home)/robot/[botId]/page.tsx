@@ -1,5 +1,4 @@
 import {
-  historyToRows,
   Table,
   TableBody,
   TableHeader,
@@ -7,6 +6,7 @@ import {
 import type { Metadata } from "next";
 import { Error, isError } from "@/utils/error";
 import LinkButton from "@/components/LinkButton";
+import { historyToRows } from "@/components/dataToRows";
 
 export const metadata: Metadata = {
   title: "UFC Autobots • Robot",

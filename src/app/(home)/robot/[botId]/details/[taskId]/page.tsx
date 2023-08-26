@@ -1,8 +1,9 @@
-import { Table, TableBody, TableHeader, detailsToRows } from "@/components/Table";
+import { Table, TableBody, TableHeader } from "@/components/Table";
 import type { Metadata } from "next";
 import { Error, isError } from "@/utils/error";
 import LinkButton from "@/components/LinkButton";
 import TaskCard from "@/components/TaskCard";
+import { detailsToRows } from "@/components/dataToRows";
 
 export const metadata: Metadata = {
   title: "UFC Autobots • Details",
