@@ -1,25 +1,14 @@
-import type { Metadata } from "next";
-import { isError } from "@/utils/error";
-import { getCredentials } from "@/utils/credentials";
-import { redirect } from "next/navigation";
 import ChangePasswordForm from "@/components/ChangePasswordForm";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "UFC Autobots • ChangePassord",
+  title: "UFC Autobots • ChangePassword",
 };
 
-export default async function Home() {
-  const credentials = await getCredentials();
-
-  if (isError(credentials)) {
-    console.log(credentials.message);
-
-    redirect("/login");
-  }
-
+export default async function ChangePassword() {
   return (
     <main className="flex flex-col items-center min-h-[calc(100vh - 4rem)] container-wrapper py-4">
-      {!isError(credentials) && <ChangePasswordForm credentials={credentials.content}/>}
+      <ChangePasswordForm />
     </main>
   );
 }

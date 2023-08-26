@@ -15,15 +15,11 @@ const DEFAULT_DATA = {
   repeat: "",
 };
 
-interface ChangePasswordFormProps {
-  credentials: string[]
-}
-
-export default function ChangePasswordForm({ credentials }: ChangePasswordFormProps) {
+export default function ChangePasswordForm() {
   const [formData, setFormData] = useState<FormData>(DEFAULT_DATA);
-
+  
   const router = useRouter();
-
+    
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const target = e.target;
 
@@ -44,8 +40,6 @@ export default function ChangePasswordForm({ credentials }: ChangePasswordFormPr
     }
 
     const body = {
-      user: credentials[0],
-      email: credentials[1],
       password: formData.password,
       newpassword: formData.newpassword,
     }

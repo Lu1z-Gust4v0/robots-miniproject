@@ -1,24 +1,19 @@
-import type { Metadata } from "next"
+"use client"
 import CarouselSection from "@/components/CarouselSection";
-import { isError } from "@/utils/error";
-import { getCredentials } from "@/utils/credentials";
+import { fetcher } from "@/utils/credentials";
 import { redirect } from "next/navigation";
+import useSWR from "swr"
 
-export const metadata: Metadata = {
-  title: "UFC Autobots • Home",
-  description: "Projeto para o processo seletivo",
-}
+export default function Home() {
+  const { data } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/credentials`, fetcher);  
 
-export default async function Home() {
-  const credentials = await getCredentials()
-  
-  if (isError(credentials)) {
-    console.log(credentials.message);
+  if (data && !data.content) {
+    console.log(data);
 
     redirect("/login");
   }
   
-  const USERNAME = !isError(credentials) ? credentials.content[0] : "" 
+  const USERNAME = data?.content ? data.content[0] : ""; 
 
   return (
     <main className="flex flex-col min-h-[calc(100vh - 4rem)] container-wrapper py-4">
