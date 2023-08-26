@@ -2,15 +2,15 @@ import { NextResponse } from "next/server";
 import path from "path";
 import fs from "fs";
 import readline from "readline";
-import { removeWhitespace } from "@/utils/string";
 
 function updateCredentials(path: string, credentials: string) {
   fs.writeFileSync(`${path}/credentials.txt`, `${credentials},false`)
 }
 
-export async function GET() {
+export async function POST() {
+  console.log("hi")
   const dataDirectory = path.join(`${process.cwd()}/public/data`);
-
+    
   const fileStream = fs.createReadStream(
     `${dataDirectory}/credentials.txt`,
     "utf8",
@@ -22,16 +22,12 @@ export async function GET() {
   });
 
   for await (const line of reader) {
-    const [username, email, _, loggedIn] = line.split(",");
-
-    if (removeWhitespace(loggedIn) === "true") {
-      fileStream.close();
-
-      return NextResponse.json({ content: [username, email] });
-    }
+    const [username, email, password, _] = line.split(",");
+  
+    updateCredentials(dataDirectory, `${username},${email},${password}`)
   }
 
   fileStream.close();
 
-  return NextResponse.json({ message: "Not logged in" }, { status: 400 });
+  return NextResponse.json({ message: "Logged out successfully" });
 }
