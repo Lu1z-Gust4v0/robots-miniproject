@@ -49,7 +49,7 @@ export default function LoginForm() {
     setFormData(DEFAULT_DATA);
     alert(data.message);
 
-    router.push(`/`);
+    router.push("/");
   }
 
   return (
