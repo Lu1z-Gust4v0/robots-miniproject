@@ -8,7 +8,6 @@ function updateCredentials(path: string, credentials: string) {
 }
 
 export async function POST() {
-  console.log("hi")
   const dataDirectory = path.join(`${process.cwd()}/public/data`);
     
   const fileStream = fs.createReadStream(
