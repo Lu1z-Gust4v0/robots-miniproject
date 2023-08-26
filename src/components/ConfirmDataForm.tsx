@@ -54,7 +54,7 @@ export default function ConfirmDataForm({ botId }: ConfirmDataFormProps) {
     }
     setFormData(DEFAULT_DATA);
     alert(data.message);
-    router.push(`/robot/${botId}`);
+    router.push(`/execute/${botId}`);
   }
 
   return (
