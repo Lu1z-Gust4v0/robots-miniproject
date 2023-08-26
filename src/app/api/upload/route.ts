@@ -3,7 +3,7 @@ import { Readable } from "stream";
 import readline from "readline";
 import path from "path";
 import fs, { promises } from "fs";
-import { format } from "date-fns";
+import { addSeconds, format } from "date-fns";
 import Papa from "papaparse";
 
 function getTaskId(path: string, id: string): string {
@@ -29,6 +29,9 @@ export async function POST(request: Request) {
 
   const formData = await request.formData();
 
+  const taskId = getTaskId(dataDirectory, id ?? "");
+  const now = new Date();
+
   formData.getAll("file").forEach(async (file) => {
     const buffer = Buffer.from(await (file as File).arrayBuffer());
 
@@ -39,31 +42,25 @@ export async function POST(request: Request) {
       crlfDelay: Infinity,
     });
 
-    const taskId = getTaskId(dataDirectory, id ?? "");
-    const now = new Date();
-
-    // Count the number of actions.
-    let counter = 0;
     for await (const line of reader) {
       const parsed = Papa.parse(line).data[0] as string[];
-
-      parsed.forEach(async (item, index) => {
+      
+      for (let index = 0; index < parsed.length; index++) {
         await promises.appendFile(
           `${dataDirectory}/details.txt`,
-          `${taskId},${
-            formatDate(new Date(now.getTime() + 1000 * index))
-          },${item}\n`,
+          `${taskId},${formatDate(addSeconds(now, index))},${parsed[index]}\n`,
         );
-        counter++;
-      });
+
+        if (index == parsed.length - 1) {
+          await promises.appendFile(
+            `${dataDirectory}/executions.txt`,
+            `${formatDate(now)},${taskId},pendente,${
+              formatDate(addSeconds(now, index))
+            }\n`,
+          );
+        }
+      }
     }
-    // start, task_id, status, end
-    await promises.appendFile(
-      `${dataDirectory}/executions.txt`,
-      `${formatDate(now)},${taskId},pendente,${
-        formatDate(new Date(now.getTime() + 1000 * counter))
-      }\n`,
-    );
 
     stream.destroy();
   });
