@@ -3,7 +3,7 @@ import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { Table, TableBody, TableHeader } from "./Table";
 import { filesToRows } from "./dataToRows";
 import LinkButton from "./LinkButton";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 interface FileUploaderProps {
   botId: string;
@@ -15,7 +15,7 @@ const FILE_LIMIT = 5;
 export default function FileUploader({ botId }: FileUploaderProps) {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   const router = useRouter();
 
   function handleFileEvent(e: ChangeEvent<HTMLInputElement>) {
@@ -76,7 +76,7 @@ export default function FileUploader({ botId }: FileUploaderProps) {
 
     const data = await response.json();
 
-    alert(data.message) 
+    alert(data.message);
     router.push(`/robot/${botId}`);
   }
 
@@ -103,22 +103,26 @@ export default function FileUploader({ botId }: FileUploaderProps) {
           accept=".csv"
           multiple
         />
-          <button
-            type="submit"
-            className={`
+        <button
+          type="submit"
+          className={`
             ml-auto self-end block bg-primary text-white py-1 px-3 rounded-md 
             transition-all duration-200 ease-out 
             hover:scale-105 hover:bg-accent 
             focus:scale-105 focus:bg-accent
-          `}>
-            Executar
-          </button>
+          `}
+        >
+          Executar
+        </button>
       </form>
-      <Table className="min-h-[100px]">
-        <TableHeader headers={["Nome do Arquivo", "Tamanho (Bytes)", "Ação"]} />
-        <TableBody rows={filesToRows(uploadedFiles, removeFile)} />
-      </Table>
-
+      <section className="w-full my-4 py-4 overflow-x-auto">
+        <Table className="min-h-[100px]">
+          <TableHeader
+            headers={["Nome do Arquivo", "Tamanho (Bytes)", "Ação"]}
+          />
+          <TableBody rows={filesToRows(uploadedFiles, removeFile)} />
+        </Table>
+      </section>
       <section className="flex w-full p-4 justify-end">
         <LinkButton path={`/robot/${botId}`}>Voltar</LinkButton>
       </section>

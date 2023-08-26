@@ -29,10 +29,11 @@ export async function POST(request: Request) {
 
   const formData = await request.formData();
 
-  const taskId = getTaskId(dataDirectory, id ?? "");
-  const now = new Date();
-
   formData.getAll("file").forEach(async (file) => {
+    const taskId = getTaskId(dataDirectory, id ?? "");
+    
+    const now = new Date();
+
     const buffer = Buffer.from(await (file as File).arrayBuffer());
 
     const stream = Readable.from(buffer);
