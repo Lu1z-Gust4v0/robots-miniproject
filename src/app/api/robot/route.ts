@@ -4,6 +4,18 @@ import readline from "readline";
 import { NextResponse } from "next/server";
 import { removeWhitespace } from "@/utils/string"
 
+function parseStatus(status: string, due: string): string {
+  const now = new Date();
+  const dueDate = new Date(due);
+  const parsed = removeWhitespace(status);
+  
+  if (parsed === "pendente" && now > dueDate) {
+    return "sucesso";
+  }
+
+  return parsed;
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
@@ -23,7 +35,9 @@ export async function GET(request: Request) {
     const executionId = line.split(",")[1]
 
     if (executionId && id === removeWhitespace(executionId.split("-")[0])) {
-      response.push(line)
+      const [start, taskId, status, end] = line.split(",") 
+      
+      response.push(`${start},${taskId},${parseStatus(status, end)}`)
     }
   }
 
