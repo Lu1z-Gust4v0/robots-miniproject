@@ -13,7 +13,7 @@ interface IConfirmDataForm {
 
 export async function POST(request: Request) {
   const { user, password } = await request.json() as IConfirmDataForm;
- 
+
   const dataDirectory = path.join(`${process.cwd()}/public/data`);
 
   const fileStream = fs.createReadStream(
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 
   for await (const line of reader) {
     const [lineUser, _, linePassword] = line.split(",");
-    
+
     if (
       lineUser === removeWhitespace(user) &&
       linePassword === removeWhitespace(password)
@@ -38,6 +38,8 @@ export async function POST(request: Request) {
       }, { status: 200 });
     }
   }
+
+  fileStream.close();
 
   return NextResponse.json({ message: "Invalid credentials" }, { status: 400 });
 }

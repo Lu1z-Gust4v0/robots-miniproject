@@ -3,6 +3,7 @@ import fs from "fs";
 import readline from "readline";
 import { NextResponse } from "next/server";
 import { removeWhitespace } from "@/utils/string";
+import { parseStatus } from "@/utils/status";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -25,9 +26,15 @@ export async function GET(request: Request) {
     const executionId = line.split(",")[1];
 
     if (executionId && id === removeWhitespace(executionId)) {
-      return NextResponse.json({ content: line.split(",") }) 
+      const [start, taskId, status, end] = line.split(",");
+      
+      const content = [start, taskId, parseStatus(status, end)]
+
+      return NextResponse.json({ content: content }) 
     }
   }
+  
+  fileStream.close();
 
   return NextResponse.json({ content: [], error: "task not found" }, { status: 404 });
 }

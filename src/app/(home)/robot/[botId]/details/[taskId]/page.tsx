@@ -58,8 +58,6 @@ export default async function Details({ params }: DetailsPageProps) {
 
   const headers = ["Data / Hora", "Mensagem"]
 
-  console.log(task)
-
   return (
     <main className="flex flex-col min-h-[calc(100vh - 4rem)] container-wrapper py-4">
       <section className="flex flex-col">

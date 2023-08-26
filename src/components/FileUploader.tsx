@@ -3,6 +3,7 @@ import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { Table, TableBody, TableHeader } from "./Table";
 import { filesToRows } from "./dataToRows";
 import LinkButton from "./LinkButton";
+import { useRouter } from 'next/navigation'
 
 interface FileUploaderProps {
   botId: string;
@@ -14,6 +15,8 @@ const FILE_LIMIT = 5;
 export default function FileUploader({ botId }: FileUploaderProps) {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  const router = useRouter();
 
   function handleFileEvent(e: ChangeEvent<HTMLInputElement>) {
     const files = e.target.files;
@@ -73,7 +76,8 @@ export default function FileUploader({ botId }: FileUploaderProps) {
 
     const data = await response.json();
 
-    console.log(data);
+    alert(data.message) 
+    router.push(`/robot/${botId}`);
   }
 
   return (

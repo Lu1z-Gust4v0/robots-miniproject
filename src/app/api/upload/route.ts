@@ -9,7 +9,7 @@ import Papa from "papaparse";
 function getTaskId(path: string, id: string): string {
   const taskCount =
     fs.readFileSync(`${path}/task_count.txt`, "utf8").split(/\r?\n/)[0];
-  
+
   // update counter
   fs.writeFileSync(`${path}/task_count.txt`, `${parseInt(taskCount) + 1}`);
 
@@ -41,25 +41,31 @@ export async function POST(request: Request) {
 
     const taskId = getTaskId(dataDirectory, id ?? "");
     const now = new Date();
-      
-    // Count the number of actions. 
-    let counter = 0;    
+
+    // Count the number of actions.
+    let counter = 0;
     for await (const line of reader) {
       const parsed = Papa.parse(line).data[0] as string[];
 
       parsed.forEach(async (item, index) => {
         await promises.appendFile(
           `${dataDirectory}/details.txt`,
-          `${taskId},${formatDate(new Date(now.getTime() + 1000 * index))},${item}\n`,
+          `${taskId},${
+            formatDate(new Date(now.getTime() + 1000 * index))
+          },${item}\n`,
         );
         counter++;
       });
     }
-    // start, task_id, status, end 
+    // start, task_id, status, end
     await promises.appendFile(
       `${dataDirectory}/executions.txt`,
-      `${formatDate(now)},${taskId},pendente,${formatDate(new Date(now.getTime() + 1000 * counter))}\n`,
+      `${formatDate(now)},${taskId},pendente,${
+        formatDate(new Date(now.getTime() + 1000 * counter))
+      }\n`,
     );
+
+    stream.destroy();
   });
 
   return NextResponse.json({ message: "Bot executed successfully" });
