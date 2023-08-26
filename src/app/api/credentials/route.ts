@@ -23,7 +23,7 @@ export async function GET() {
     if (removeWhitespace(loggedIn) === "true") {
       fileStream.close();
 
-      return NextResponse.json({ message: "Logged in", content: [username, email] });
+      return NextResponse.json({ content: [username, email] });
     }
   }
 

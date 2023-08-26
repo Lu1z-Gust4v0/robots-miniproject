@@ -1,7 +1,7 @@
 import { Error } from "./error";
 
 interface GetCredentialsResponse {
-  message: string;
+  message?: string;
   content?: string[];
 }
 
