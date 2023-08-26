@@ -50,7 +50,7 @@ export async function POST(request: Request) {
       parsed.forEach(async (item, index) => {
         await promises.appendFile(
           `${dataDirectory}/details.txt`,
-          `${taskId},${formatDate(new Date(now.getTime() + 1000 * index))},${item}`,
+          `${taskId},${formatDate(new Date(now.getTime() + 1000 * index))},${item}\n`,
         );
         counter++;
       });
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
     // start, task_id, status, end 
     await promises.appendFile(
       `${dataDirectory}/executions.txt`,
-      `${formatDate(now)},${taskId},pendente,${formatDate(new Date(now.getTime() + 1000 * counter))}`,
+      `${formatDate(now)},${taskId},pendente,${formatDate(new Date(now.getTime() + 1000 * counter))}\n`,
     );
   });
 
