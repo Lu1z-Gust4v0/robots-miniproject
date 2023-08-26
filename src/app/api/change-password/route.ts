@@ -5,8 +5,6 @@ import readline from "readline";
 import { removeWhitespace } from "@/utils/string";
 
 interface IChangePasswordForm {
-  user: string;
-  email: string;
   password: string;
   newpassword: string;
 }
@@ -16,7 +14,7 @@ function updateCredentials(path: string, credentials: string) {
 }
 
 export async function POST(request: Request) {
-  const { user, email, password, newpassword } = await request.json() as IChangePasswordForm;
+  const { password, newpassword } = await request.json() as IChangePasswordForm;
 
   const dataDirectory = path.join(`${process.cwd()}/public/data`);
 
@@ -34,8 +32,6 @@ export async function POST(request: Request) {
     const [lineUser, lineEmail, linePassword, _] = line.split(",");
 
     if (
-      lineUser === removeWhitespace(user) &&
-      lineEmail === removeWhitespace(email) &&
       linePassword === removeWhitespace(password)
     ) {
       fileStream.close();

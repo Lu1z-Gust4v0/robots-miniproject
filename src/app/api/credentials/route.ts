@@ -4,10 +4,6 @@ import fs from "fs";
 import readline from "readline";
 import { removeWhitespace } from "@/utils/string";
 
-function updateCredentials(path: string, credentials: string) {
-  fs.writeFileSync(`${path}/credentials.txt`, `${credentials},false`)
-}
-
 export async function GET() {
   const dataDirectory = path.join(`${process.cwd()}/public/data`);
 
@@ -27,7 +23,7 @@ export async function GET() {
     if (removeWhitespace(loggedIn) === "true") {
       fileStream.close();
 
-      return NextResponse.json({ content: [username, email] });
+      return NextResponse.json({ message: "Logged in", content: [username, email] });
     }
   }
 
