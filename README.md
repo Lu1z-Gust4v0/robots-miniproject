@@ -1,34 +1,45 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# UFC Autobots 
 
-## Getting Started
+Esse é um projeto feito para o processo seletivo de uma bolsa na faculdade. Ele simula uma aplicação web que permite ao usuário executar bots para a realização de tarefas automaticamente.
 
-First, run the development server:
+## Tecnologias usuadas 
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+- Nextjs
+- Typescript
+- TailwindCSs
+
+## Como rodar a aplicação 
+
+
+- Clone o repositorio
+```
+git https://github.com/Lu1z-Gust4v0/robots-miniproject.git
+cd robots-miniproject
+```
+- Instale as dependencias 
+
+```
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Coloque a variavel de ambiente
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+``` 
+# em .env
+NEXT_URL_URL="http://localhost:3000"
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Rode o servidor de testes
+```
+npm run dev
+```
 
-## Learn More
+## Aprendizagens
 
-To learn more about Next.js, take a look at the following resources:
+- Como dar upload de arquivos para endpoints
+- Como consumir arquivos .csv usando streams 
+- Como mockar um banco de dados com arquivos .txt
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Agredecimentos
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Gostaria de agredecer ao meu amigo Said por me ajudar a dar deploy desta aplicação
