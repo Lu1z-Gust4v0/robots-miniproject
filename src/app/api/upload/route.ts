@@ -8,19 +8,19 @@ import { details, executions, taskCount } from "@/data/defaults";
 import { createAndAppend } from "@/utils/write";
 import Papa from "papaparse";
 
-async function getTaskId(path: string, id: string): Promise<string> {
+function getTaskId(path: string, id: string): string {
   const target = `${path}/task_count.txt`;
 
   if (!fs.existsSync(target)) {
-    await promises.writeFile(target, taskCount);
+    fs.writeFileSync(target, taskCount);
   }
 
-  const taskId = await promises.readFile(target, "utf8");
+  const taskId = fs.readFileSync(target, "utf8").split(/\r?\n/)[0];
 
   // update counter
-  await promises.writeFile(target, `${parseInt(taskId.split(/\r?\n/)[0]) + 1}`);
+  fs.writeFileSync(target, `${parseInt(taskId) + 1}`);
 
-  return `${id}-task-${parseInt(taskCount) + 1}`;
+  return `${id}-task-${parseInt(taskId) + 1}`;
 }
 
 function formatDate(date: Date): string {
@@ -41,8 +41,8 @@ export async function POST(request: Request) {
   const formData = await request.formData();
 
   formData.getAll("file").forEach(async (file) => {
-    const taskId = await getTaskId(dataDirectory, id ?? "");
-
+    const taskId = getTaskId(dataDirectory, id ?? "");
+      
     const now = new Date();
 
     const buffer = Buffer.from(await (file as File).arrayBuffer());
@@ -69,13 +69,13 @@ export async function POST(request: Request) {
           await createAndAppend(executionsFile, executions);
         }
 
-        await promises.appendFile(
+        fs.appendFileSync(
           detailsFile,
           `${taskId},${formatDate(addSeconds(now, index))},${parsed[index]}\n`,
         );
 
         if (index == parsed.length - 1) {
-          await promises.appendFile(
+          fs.appendFileSync(
             executionsFile,
             `${formatDate(now)},${taskId},pendente,${
               formatDate(addSeconds(now, index))
