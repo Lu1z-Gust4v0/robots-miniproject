@@ -4,14 +4,21 @@ import readline from "readline";
 import path from "path";
 import fs, { promises } from "fs";
 import { addSeconds, format } from "date-fns";
+import { details, executions, taskCount } from "@/data/defaults";
+import { createAndAppend } from "@/utils/write";
 import Papa from "papaparse";
 
-function getTaskId(path: string, id: string): string {
-  const taskCount =
-    fs.readFileSync(`${path}/task_count.txt`, "utf8").split(/\r?\n/)[0];
+async function getTaskId(path: string, id: string): Promise<string> {
+  const target = `${path}/task_count.txt`;
+
+  if (!fs.existsSync(target)) {
+    await promises.writeFile(target, taskCount);
+  }
+
+  const taskId = await promises.readFile(target, "utf8");
 
   // update counter
-  fs.writeFileSync(`${path}/task_count.txt`, `${parseInt(taskCount) + 1}`);
+  await promises.writeFile(target, `${parseInt(taskId.split(/\r?\n/)[0]) + 1}`);
 
   return `${id}-task-${parseInt(taskCount) + 1}`;
 }
@@ -27,11 +34,15 @@ export async function POST(request: Request) {
 
   const dataDirectory = path.join(`${process.cwd()}/public/data`);
 
+  if (!fs.existsSync(dataDirectory)) {
+    await promises.mkdir(dataDirectory, { recursive: true });
+  }
+
   const formData = await request.formData();
 
   formData.getAll("file").forEach(async (file) => {
-    const taskId = getTaskId(dataDirectory, id ?? "");
-    
+    const taskId = await getTaskId(dataDirectory, id ?? "");
+
     const now = new Date();
 
     const buffer = Buffer.from(await (file as File).arrayBuffer());
@@ -45,16 +56,27 @@ export async function POST(request: Request) {
 
     for await (const line of reader) {
       const parsed = Papa.parse(line).data[0] as string[];
-      
+
       for (let index = 0; index < parsed.length; index++) {
+        const detailsFile = `${dataDirectory}/details.txt`;
+        const executionsFile = `${dataDirectory}/executions.txt`;
+
+        if (!fs.existsSync(detailsFile)) {
+          await createAndAppend(detailsFile, details);
+        }
+
+        if (!fs.existsSync(executionsFile)) {
+          await createAndAppend(executionsFile, executions);
+        }
+
         await promises.appendFile(
-          `${dataDirectory}/details.txt`,
+          detailsFile,
           `${taskId},${formatDate(addSeconds(now, index))},${parsed[index]}\n`,
         );
 
         if (index == parsed.length - 1) {
           await promises.appendFile(
-            `${dataDirectory}/executions.txt`,
+            executionsFile,
             `${formatDate(now)},${taskId},pendente,${
               formatDate(addSeconds(now, index))
             }\n`,

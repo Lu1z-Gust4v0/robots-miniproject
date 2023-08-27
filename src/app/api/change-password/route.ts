@@ -1,27 +1,35 @@
 import { NextResponse } from "next/server";
 import path from "path";
-import fs from "fs";
+import fs, { promises } from "fs";
 import readline from "readline";
 import { removeWhitespace } from "@/utils/string";
+import { credentials } from "@/data/defaults";
 
 interface IChangePasswordForm {
   password: string;
   newpassword: string;
 }
 
-function updateCredentials(path: string, credentials: string) {
-  fs.writeFileSync(`${path}/credentials.txt`, `${credentials},false`)
+async function updateCredentials(path: string, credentials: string) {
+  await promises.writeFile(`${path}/credentials.txt`, `${credentials},false`);
 }
 
 export async function POST(request: Request) {
   const { password, newpassword } = await request.json() as IChangePasswordForm;
 
   const dataDirectory = path.join(`${process.cwd()}/public/data`);
+  
+  if (!fs.existsSync(dataDirectory)) {
+    await promises.mkdir(dataDirectory, { recursive: true })
+  }
 
-  const fileStream = fs.createReadStream(
-    `${dataDirectory}/credentials.txt`,
-    "utf8",
-  );
+  const target = `${dataDirectory}/credentials.txt`;
+
+  if (!fs.existsSync(target)) {
+    await promises.writeFile(target, credentials);
+  }
+
+  const fileStream = fs.createReadStream(target, "utf8");
 
   const reader = readline.createInterface({
     input: fileStream,
@@ -36,7 +44,10 @@ export async function POST(request: Request) {
     ) {
       fileStream.close();
 
-      updateCredentials(dataDirectory,`${lineUser},${lineEmail},${newpassword}`) 
+      await updateCredentials(
+        dataDirectory,
+        `${lineUser},${lineEmail},${newpassword}`,
+      );
 
       return NextResponse.json({
         message: "Password changed successfully",

@@ -1,16 +1,24 @@
 import { NextResponse } from "next/server";
 import path from "path";
-import fs from "fs";
+import fs, { promises } from "fs";
 import readline from "readline";
 import { removeWhitespace } from "@/utils/string";
+import { credentials } from "@/data/defaults";
 
 export async function GET() {
   const dataDirectory = path.join(`${process.cwd()}/public/data`);
+  
+  if (!fs.existsSync(dataDirectory)) {
+    await promises.mkdir(dataDirectory, { recursive: true })
+  }
+  
+  const target = `${dataDirectory}/credentials.txt`;
 
-  const fileStream = fs.createReadStream(
-    `${dataDirectory}/credentials.txt`,
-    "utf8",
-  );
+  if (!fs.existsSync(target)) {
+    await promises.writeFile(target, credentials);
+  }
+
+  const fileStream = fs.createReadStream(target, "utf8");
 
   const reader = readline.createInterface({
     input: fileStream,

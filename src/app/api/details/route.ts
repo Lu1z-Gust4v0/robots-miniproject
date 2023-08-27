@@ -1,8 +1,10 @@
 import path from "path";
-import fs from "fs";
+import fs, { promises } from "fs";
 import readline from "readline";
 import { NextResponse } from "next/server";
 import { removeWhitespace } from "@/utils/string";
+import { details } from "@/data/defaults";
+import { createAndAppend } from "@/utils/write";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -10,11 +12,18 @@ export async function GET(request: Request) {
   const id = searchParams.get("id");
 
   const dataDirectory = path.join(`${process.cwd()}/public/data`);
+  
+  if (!fs.existsSync(dataDirectory)) {
+    await promises.mkdir(dataDirectory, { recursive: true })
+  } 
+  
+  const target = `${dataDirectory}/details.txt`;
+  
+  if (!fs.existsSync(target)) {
+    await createAndAppend(target, details);
+  }
 
-  const fileStream = fs.createReadStream(
-    `${dataDirectory}/details.txt`,
-    "utf8",
-  );
+  const fileStream = fs.createReadStream(target, "utf8");
 
   const reader = readline.createInterface({
     input: fileStream,

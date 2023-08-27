@@ -1,9 +1,11 @@
 import path from "path";
-import fs from "fs";
+import fs, { promises } from "fs";
 import readline from "readline";
 import { NextResponse } from "next/server";
 import { removeWhitespace } from "@/utils/string";
 import { parseStatus } from "@/utils/status";
+import { executions } from "@/data/defaults";
+import { createAndAppend } from "@/utils/write";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -12,10 +14,17 @@ export async function GET(request: Request) {
 
   const dataDirectory = path.join(`${process.cwd()}/public/data`);
 
-  const fileStream = fs.createReadStream(
-    `${dataDirectory}/executions.txt`,
-    "utf8",
-  );
+  if (!fs.existsSync(dataDirectory)) {
+    await promises.mkdir(dataDirectory, { recursive: true });
+  }
+
+  const target = `${dataDirectory}/executions.txt`;
+
+  if (!fs.existsSync(target)) {
+    await createAndAppend(target, executions);
+  }
+
+  const fileStream = fs.createReadStream(target, "utf8");
 
   const reader = readline.createInterface({
     input: fileStream,
