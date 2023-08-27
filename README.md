@@ -8,6 +8,40 @@ Esse é um projeto feito para o processo seletivo de uma bolsa na faculdade. Ele
 - Typescript
 - TailwindCSs
 
+## Vídeo do Projeto 
+
+- [Clique aqui](https://youtu.be/4_jImTwMfnc)
+
+## Link para o projeto 
+
+- [Clique aqui](https://autobots.flemis.xyz/)
+
+## Images do projeto 
+
+### Página de login
+![](./public/screenshots/login_page.png)
+
+### Página inicial
+![](./public/screenshots/home_page.png)
+
+### Página de execuções
+![](./public/screenshots/executions_page.png)
+
+### Página de detalhes
+![](./public/screenshots/details_page.png)
+
+### Página de confirmação
+![](./public/screenshots/confirm_page.png)
+
+### Página de execução
+![](./public/screenshots/execute_page.png)
+
+### Página de recuperar senha
+![](./public/screenshots/recover_page.png)
+
+### Página de trocar senha
+![](./public/screenshots/change_password_page.png)
+
 ## Como rodar a aplicação 
 
 
